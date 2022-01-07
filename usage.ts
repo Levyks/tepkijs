@@ -1,5 +1,4 @@
-import { createStore } from './index';
-
+import { createStore } from '.';
 import { Server } from 'socket.io';
 
 const io = new Server(5000, {
@@ -8,9 +7,13 @@ const io = new Server(5000, {
   }
 });
 
+type State = {
+  messages: string[]
+}
+
 const store = createStore({
   io, name: 'room-01',
-  data() {
+  data(): State {
     return {
       messages: []
     }
@@ -18,13 +21,6 @@ const store = createStore({
   methods: {
     addMessage(message) {
       this.messages.push(message);
-    },
-    answer() {
-      return 42;
     }
   }
-});
-
-store.subscribe(state => {
-  console.log('state changed', state);
 });
