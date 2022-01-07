@@ -1,46 +1,36 @@
 import { createStore } from './index';
 
-class Round {
+import { Server } from 'socket.io';
 
-  status: string = 'waiting';
-
-  start() {
-    this.status = 'started';
+const io = new Server(3000, {
+  cors: {
+    origin: '*',
   }
+});
 
-}
-
-class Game {
-
-  started: boolean = false;
-  rounds: Round[] = [];
-
-  start() {
-    this.started = true;
+const store = createStore({
+  name: 'room-01',
+  io: io,
+  data() {
+    return {
+      messages: []
+    }
+  },
+  methods: {
+    addMessage(message) {
+      this.messages.push(message);
+    }
   }
+});
 
-  createRound() {
-    this.rounds.push(new Round());
-  }
+store.subscribe(state => {
+  console.log('state changed', state);
+});
 
-  
-}
+console.log('store');
 
-class Room {
-
-  game: Game;
-  code = "AAAA ";
-
-  createGame() {
-    this.game = new Game();
-  }
-
-}
-
-
-const store = createStore(Room);
-
-store.createGame();
-store.game.start();
-store.game.createRound();
-store.game.rounds[0].start();
+setTimeout(() => {
+  console.log("adicionando");
+  store.methods.addMessage('hello');
+  console.log(store.state);
+}, 10000);

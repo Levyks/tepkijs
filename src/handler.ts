@@ -34,7 +34,6 @@ export default class Handler {
 
   set(target, key, value) {
     target[key] = value;
-    if(Array.isArray(target) && key !== 'length') key = Number(key);
     this.callback([].concat(key), value);
     return true;
   }
