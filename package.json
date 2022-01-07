@@ -13,8 +13,12 @@
     "state",
     "socket.io"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Levy Barbosa <marcio.levy20@gmail.com>",
+  "license": "GPLv3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Levyks/tepkijs.git"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "deep-object-diff": "^1.1.0",
