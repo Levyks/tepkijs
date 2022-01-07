@@ -4,6 +4,8 @@
 
 Remote stores powered by Socket.IO with a Vue/Vuex like syntax in the backend.
 
+[Client repo](https://github.com/Levyks/tepkijs-client)
+
 Server:
 ```ts
 import { createStore } from 'tepkijs';
