@@ -46,8 +46,23 @@ export default class Store<D, M extends Methods > {
     const unsubscribe = this.subscribe((_, diff) => socket.emit('change', diff));
     
     socket.on('call', (data: {method: string, args: any[]}, callback: Function) => {
-      const result = this.methods[data.method](...data.args);
-      if(callback) callback(result);
+      
+      if(!this.methods?.[data.method] || typeof this.methods[data.method] !== 'function') {
+        const error = new Error(`Method '${data.method}' does not exist`);
+        
+        if(callback) return callback(false, error);
+        else throw error;
+      } 
+
+      try {
+        const result = this.methods[data.method](...data.args);
+        if(callback) callback(true, result);
+        
+      } catch(error) {
+        if(callback) callback(false, error);
+        else throw error;
+      }
+      
     });
 
     socket.on('disconnect', unsubscribe);
