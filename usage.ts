@@ -2,15 +2,14 @@ import { createStore } from './index';
 
 import { Server } from 'socket.io';
 
-const io = new Server(3000, {
+const io = new Server(5000, {
   cors: {
     origin: '*',
   }
 });
 
 const store = createStore({
-  name: 'room-01',
-  io: io,
+  io, name: 'room-01',
   data() {
     return {
       messages: []
@@ -19,6 +18,9 @@ const store = createStore({
   methods: {
     addMessage(message) {
       this.messages.push(message);
+    },
+    answer() {
+      return 42;
     }
   }
 });
@@ -26,11 +28,3 @@ const store = createStore({
 store.subscribe(state => {
   console.log('state changed', state);
 });
-
-console.log('store');
-
-setTimeout(() => {
-  console.log("adicionando");
-  store.methods.addMessage('hello');
-  console.log(store.state);
-}, 10000);
