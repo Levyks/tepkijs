@@ -1,15 +1,7 @@
-import { Server } from 'socket.io';
-import { Methods } from './typings';
+import { Methods, CreateStoreOptions } from './typings';
 
 import Store from './store';
 import Handler from './handler';
-
-type CreateStoreOptions<T, M extends Methods> = {
-  name?: string,
-  io?: Server,
-  data?: () => T,
-  methods?: M
-};
 
 const mainProxyHandler: ProxyHandler<any> = {
   get: (target, key) => {
@@ -34,7 +26,7 @@ function createStore<T, M extends Methods>(options: CreateStoreOptions<T, M>): S
   const storeProxy = new Proxy(store, mainProxyHandler);
 
   store.methods = new Proxy(options.methods, createMethodsProxyHandler(storeProxy));
-  store.state = new Proxy(options.data.apply(storeProxy), new Handler(store.getStateChangeCallback()));
+  store.state = new Proxy(options.data, new Handler(store.getStateChangeCallback()));
 
   return store;
 }

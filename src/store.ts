@@ -49,16 +49,18 @@ export default class Store<D, M extends Methods > {
       
       if(!this.methods?.[data.method] || typeof this.methods[data.method] !== 'function') {
         const error = new Error(`Method '${data.method}' does not exist`);
-        
+        console.error("esse", error);
         if(callback) return callback(false, error);
         else throw error;
       } 
 
       try {
-        const result = this.methods[data.method](...data.args);
+        console.log(data);
+        const result = this.methods[data.method](socket, ...data.args);
         if(callback) callback(true, result);
         
       } catch(error) {
+        console.error("aqui", error);
         if(callback) callback(false, error);
         else throw error;
       }

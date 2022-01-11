@@ -17,16 +17,10 @@ const io = new Server(5000, {
   }
 });
 
-type State = {
-  messages: string[]
-}
-
 const store = createStore({
   io, name: 'room-01',
-  data(): State {
-    return {
-      messages: []
-    }
+  data: { 
+    messages: []
   },
   methods: {
     addMessage(message) {

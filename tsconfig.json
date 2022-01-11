@@ -5,6 +5,7 @@
     "declaration": true,
     "outDir": "dist",
     "esModuleInterop": true,
+    "noImplicitThis": true
   },
   "exclude": [
     "node_modules/*"
