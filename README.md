@@ -20,7 +20,8 @@ const io = new Server(5000, {
 const store = createStore({
   io, name: 'room-01',
   data: { 
-    messages: []
+    messages: [],
+    _somethingPrivate: {}
   },
   methods: {
     addMessage(message) {

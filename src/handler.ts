@@ -26,14 +26,15 @@ export default class Handler {
     return new Proxy(elem, this.createHandler(handler_key));
   }
 
-  get(target, key) {
-    if(typeof target[key] !== 'object') return target[key];
+  get(target, key: string) {
+    if(typeof target[key] !== 'object' || key.startsWith('_')) return target[key];
     this.proxies[key] = this.proxies[key] || this.createProxy(target, key);
     return this.proxies[key];
   }
 
-  set(target, key, value) {
+  set(target, key: string, value) {
     target[key] = value;
+    if(key.startsWith('_')) return true;
     this.callback([].concat(key), value);
     return true;
   }
