@@ -13,4 +13,7 @@ export type CreateStoreOptions<D, M> = {
   io: Server,
   data?: D,
   methods?: M & ThisType<D & M>;
+  middleware?: ioMiddleware;
 };
+
+export type ioMiddleware = (socket: Socket, next: (err?: any) => void) => void;

@@ -1,17 +1,21 @@
-import { Server, Socket } from 'socket.io';
-import { Methods, Path, Subscription } from './typings';
+import { Namespace, Server, Socket } from 'socket.io';
+import { ioMiddleware, Methods, Path, Subscription } from './typings';
 import { getPublicState } from './util';
 
 export default class Store<D, M extends Methods > {
 
   public state?: D;
   public methods?: M;
+  private ioNsp: Namespace;
 
   constructor(
     public name: string,
-    private io: Server
+    private io: Server,
+    middleware?: ioMiddleware
   ) {
-    io.of(`/tepki/${name}`).on('connection', s => this.handleSocketConnection(s));
+    this.ioNsp = io.of(`/tepki/${name}`);
+    if(middleware) this.ioNsp.use(middleware);
+    this.ioNsp.on('connection', s => this.handleSocketConnection(s));
   }
 
   private subscription_count = 0;

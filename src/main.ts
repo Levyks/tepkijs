@@ -21,7 +21,7 @@ function createMethodsProxyHandler<T, M extends Methods>(mainProxy: Store<T, M>)
 
 function createStore<T, M extends Methods>(options: CreateStoreOptions<T, M>): Store<T, M> {
 
-  const store: Store<T, M> = new Store(options.name, options.io);
+  const store: Store<T, M> = new Store(options.name, options.io, options.middleware);
 
   const storeProxy = new Proxy(store, mainProxyHandler);
 
