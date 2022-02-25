@@ -47,7 +47,7 @@ export default class Store<D, M extends Methods > {
   private handleSocketConnection(socket: Socket) {
     // TODO: better handle connection problems with acknowledgements
     socket.emit('state', getPublicState(this.state));
-    const unsubscribe = this.subscribe((_, diff) => socket.emit('change', diff));
+    const unsubscribe = this.subscribe((_, diff) => socket.emit('change', getPublicState(diff)));
     
     socket.on('call', (data: {method: string, args: any[]}, callback: Function) => {
       
