@@ -18,3 +18,9 @@ const store = createStore({
     }
   }
 });
+
+store.subscribe((value) => {
+
+  console.log('Data -> ', value);
+
+});
