@@ -59,7 +59,13 @@ export default class Store<D, M extends Methods > {
 
       try {
         const result = this.methods[data.method](socket, ...data.args);
-        if(callback) callback(true, result);
+        if(!callback) return;
+        
+        if(result instanceof Promise) {
+          result.then(res => callback(true, res)).catch(err => callback(false, err));
+        } else {
+          callback(true, result);
+        }
         
       } catch(error) {
         if(callback) callback(false, error);
