@@ -7,6 +7,7 @@ export default class Store<D, M extends Methods > {
   public state?: D;
   public methods?: M;
   private ioNsp: Namespace;
+  public proxy: this;
 
   constructor(
     public name: string,
@@ -58,7 +59,7 @@ export default class Store<D, M extends Methods > {
       } 
 
       try {
-        const result = this.methods[data.method](socket, ...data.args);
+        const result = this.methods[data.method].apply(this.proxy, [socket, ...data.args]);
         if(!callback) return;
         
         if(result instanceof Promise) {

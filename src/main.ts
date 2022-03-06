@@ -24,6 +24,7 @@ function createStore<T, M extends Methods>(options: CreateStoreOptions<T, M>): S
   const store: Store<T, M> = new Store(options.name, options.io, options.middleware);
 
   const storeProxy = new Proxy(store, mainProxyHandler);
+  store.proxy = storeProxy;
 
   store.methods = new Proxy(options.methods, createMethodsProxyHandler(storeProxy));
   store.state = new Proxy(options.data, new Handler(store.getStateChangeCallback()));
